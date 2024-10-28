@@ -1,8 +1,8 @@
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
 !**/src/test/**/target/
 
 # sts
+.env
 .apt_generated
 .classpath
 .factorypath
