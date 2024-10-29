@@ -1,11 +1,22 @@
 package com.shc.shc_server.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.Data;
 
 @Entity
 @Table(name = "activities")
@@ -41,7 +52,7 @@ public class Activity {
     private Integer maxCapacity;
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Gestiona la serialización de la relación bidireccional
+    @JsonBackReference // evitar referencias circulares
     private List<Student> students;
 
     @Column(nullable = false)
