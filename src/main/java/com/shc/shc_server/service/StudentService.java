@@ -1,5 +1,6 @@
 package com.shc.shc_server.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class StudentService {
     @Autowired
     private ActivityRepository activityRepository;
 
-    // get all
+    // Get all students
     public List<Student> getAllStudents() {
         List<Student> students = studentRepository.findAll();
         students.forEach(student -> {
@@ -31,7 +32,7 @@ public class StudentService {
         return students;
     }
 
-    // get by email
+    // Get student by email
     public Student findByEmail(String email) {
         Optional<Student> studentOpt = studentRepository.findByEmail(email);
         if (studentOpt.isPresent()) {
@@ -43,7 +44,7 @@ public class StudentService {
         return null;
     }
 
-    // get by id
+    // Get student by id
     public Student getStudentById(Long id) {
         Optional<Student> studentOpt = studentRepository.findById(id);
         if (studentOpt.isPresent()) {
@@ -55,12 +56,14 @@ public class StudentService {
         return null;
     }
 
-    // save a new student
+    // Save a new student
     public Student saveStudent(Student student) {
+        student.setPreviousActivities(new ArrayList<>()); // Inicializar si es necesario
+        student.setPreferredActivities(new ArrayList<>()); // Inicializar si es necesario
         return studentRepository.save(student);
     }
 
-    // update student
+    // Update student
     public Student updateStudent(Long id, Student updatedStudent) {
         Student existingStudent = getStudentById(id);
         if (existingStudent != null) {
@@ -83,18 +86,17 @@ public class StudentService {
         return null;
     }
 
-    // delete student
+    // Delete student
     public void deleteStudent(Long id) {
         if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
         }
     }
 
-    // join activity
+    // Join activity
     public Student joinActivity(Long studentId, Long activityId) {
         Student student = getStudentById(studentId);
-        Activity activity = activityRepository.findById(activityId)
-                .orElse(null);
+        Activity activity = activityRepository.findById(activityId).orElse(null);
 
         if (activity != null && student != null) {
             if (activity.getStudents().size() < activity.getMaxCapacity()) {
@@ -109,7 +111,7 @@ public class StudentService {
         return student;
     }
 
-    // get completed scholarship hours
+    // Get completed scholarship hours
     public int getCompletedScholarshipHours(Long id) {
         Student student = getStudentById(id);
         if (student != null) {

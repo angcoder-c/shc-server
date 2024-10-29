@@ -35,30 +35,33 @@ public class ActivityService {
     @Autowired
     private StudentRepository studentRepository;
 
-    // get all activities
+    // Get all activities
     public List<Activity> getAllActivities() {
         return activityRepository.findAll();
     }
 
-    // get activity by id
+    // Get activity by id
     public Activity getActivityById(Long id) {
         return activityRepository.findById(id).orElse(null);
     }
 
-    // get activitys by name coordinator
+    // Get activities by coordinator's name
     public List<Activity> getActivitiesByNameCoordinator(String name) {
         return activityRepository.findByCoordinatorContainingIgnoreCase(name);
     }
 
-    // save new activity
+    // Save new activity
     public Activity saveActivity(Activity activity) {
         return activityRepository.save(activity);
     }
 
-    // update existing activity
+    // Update existing activity
     public Activity updateActivity(Long id, Activity updatedActivity) {
         Activity existingActivity = getActivityById(id);
-
+        if (existingActivity == null) {
+            throw new RuntimeException("Activity not found for id: " + id);
+        }
+        
         existingActivity.setName(updatedActivity.getName());
         existingActivity.setStartTime(updatedActivity.getStartTime());
         existingActivity.setEndTime(updatedActivity.getEndTime());
@@ -74,7 +77,7 @@ public class ActivityService {
         return activityRepository.save(existingActivity);
     }
 
-    // delete activity by id
+    // Delete activity by id
     public void deleteActivity(Long id) {
         if (!activityRepository.existsById(id)) {
             throw new RuntimeException("Activity not found for id: " + id);
@@ -82,8 +85,7 @@ public class ActivityService {
         activityRepository.deleteById(id);
     }
 
-
-    // generate qr code image
+    // Generate QR code image
     public BufferedImage generateQRCodeImage(String text) throws Exception {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         Map<EncodeHintType, Object> hintMap = new HashMap<>();
@@ -92,7 +94,7 @@ public class ActivityService {
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
 
-    // get qr code as bytes
+    // Get QR code as bytes
     public byte[] getQRCodeImageBytes(String text) throws Exception {
         BufferedImage qrImage = generateQRCodeImage(text);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -100,7 +102,7 @@ public class ActivityService {
         return baos.toByteArray();
     }
 
-    // get students by activity id
+    // Get students by activity id
     @Transactional(readOnly = true)
     public List<Student> getStudentsByActivityId(Long activityId) {
         Activity activity = getActivityById(activityId);
@@ -108,18 +110,22 @@ public class ActivityService {
         return activity.getStudents();
     }
 
-    // add student to activity
+    // Add student to activity
     @Transactional
     public Activity addStudent(Long activityId, Long studentId) {
         Activity activity = getActivityById(activityId);
         Student student = studentRepository.findById(studentId).orElse(null);
+
+        if (student == null) {
+            throw new RuntimeException("Student not found for id: " + studentId);
+        }
 
         if (activity.getStudents().size() >= activity.getMaxCapacity()) {
             throw new RuntimeException("Maximum capacity reached for activity: " + activityId);
         }
 
         activity.getStudents().add(student);
-        student.setActivity(activity);
+        student.getPreferredActivities().add(activity); 
 
         activityRepository.save(activity);
         studentRepository.save(student);
@@ -127,7 +133,7 @@ public class ActivityService {
         return activity;
     }
 
-    // remove student from activity
+    // Remove student from activity
     @Transactional
     public Activity removeStudent(Long activityId, Long studentId) {
         Activity activity = getActivityById(activityId);
@@ -135,7 +141,7 @@ public class ActivityService {
                 .orElseThrow(() -> new RuntimeException("Student not found for id: " + studentId));
 
         activity.getStudents().remove(student);
-        student.setActivity(null);
+        student.getPreferredActivities().remove(activity); 
 
         activityRepository.save(activity);
         studentRepository.save(student);
@@ -143,7 +149,7 @@ public class ActivityService {
         return activity;
     }
 
-    // disable joining to an activity
+    // Disable joining to an activity
     public Activity disableJoining(Long id) {
         Activity activity = getActivityById(id);
         activity.setMaxCapacity(0);

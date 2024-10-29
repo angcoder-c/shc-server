@@ -51,7 +51,7 @@ public class Student {
     private Double completedScholarshipHours;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonManagedReference("student-previous-activities") 
+    @JsonManagedReference
     @JoinTable(
             name = "student_previous_activities",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -60,7 +60,7 @@ public class Student {
     private List<Activity> previousActivities;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonManagedReference("student-preferred-activities") 
+    @JsonManagedReference 
     @JoinTable(
             name = "student_preferred_activities",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -80,6 +80,6 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "activity_id")
-    @JsonBackReference 
+    @JsonBackReference
     private Activity activity;
 }

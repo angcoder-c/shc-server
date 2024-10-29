@@ -52,7 +52,7 @@ public class Activity {
     private Integer maxCapacity;
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference // evitar referencias circulares
+    @JsonBackReference 
     private List<Student> students;
 
     @Column(nullable = false)
