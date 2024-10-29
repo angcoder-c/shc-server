@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,7 +50,6 @@ public class Student {
     private Double completedScholarshipHours;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonManagedReference
     @JoinTable(
             name = "student_previous_activities",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -60,7 +58,6 @@ public class Student {
     private List<Activity> previousActivities;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonManagedReference 
     @JoinTable(
             name = "student_preferred_activities",
             joinColumns = @JoinColumn(name = "student_id"),
