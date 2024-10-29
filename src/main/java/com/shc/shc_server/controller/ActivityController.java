@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shc.shc_server.model.Activity;
 import com.shc.shc_server.model.Student;
 import com.shc.shc_server.service.ActivityService;
+import com.shc.shc_server.service.StudentService;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -26,6 +27,9 @@ public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
+
+    @Autowired
+    private StudentService studentService;
 
     @GetMapping("/")
     public ResponseEntity<List<Activity>> getAllActivities() {
@@ -79,6 +83,7 @@ public class ActivityController {
 
     @PostMapping("/{activityId}/addStudent/{studentId}")
     public ResponseEntity<Activity> addStudentToActivity(@PathVariable Long activityId, @PathVariable Long studentId) {
+        studentService.joinActivity(studentId, activityId);
         Activity updatedActivity = activityService.addStudent(activityId, studentId);
         return ResponseEntity.ok(updatedActivity);
     }
