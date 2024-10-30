@@ -56,12 +56,19 @@ public class ActivityService {
     }
 
     // Update existing activity
+    @Transactional
     public Activity updateActivity(Long id, Activity updatedActivity) {
         Activity existingActivity = getActivityById(id);
         if (existingActivity == null) {
             throw new RuntimeException("Activity not found for id: " + id);
         }
-        
+    
+        List<Student> studentsWithPreferredActivity = studentRepository.findAllByPreferredActivitiesContains(existingActivity);
+        for (Student student : studentsWithPreferredActivity) {
+            student.getPreferredActivities().remove(existingActivity);
+            studentRepository.save(student);
+        }
+    
         existingActivity.setName(updatedActivity.getName());
         existingActivity.setStartTime(updatedActivity.getStartTime());
         existingActivity.setEndTime(updatedActivity.getEndTime());
@@ -73,17 +80,33 @@ public class ActivityService {
         existingActivity.setDepartment(updatedActivity.getDepartment());
         existingActivity.setDescription(updatedActivity.getDescription());
         existingActivity.setDate(updatedActivity.getDate());
-
-        return activityRepository.save(existingActivity);
-    }
+    
+        Activity savedActivity = activityRepository.save(existingActivity);
+    
+        for (Student student : studentsWithPreferredActivity) {
+            student.getPreferredActivities().add(savedActivity);
+            studentRepository.save(student);
+        }
+    
+        return savedActivity;
+    }    
 
     // Delete activity by id
+    @Transactional
     public void deleteActivity(Long id) {
-        if (!activityRepository.existsById(id)) {
+        Activity activity = getActivityById(id);
+        if (activity == null) {
             throw new RuntimeException("Activity not found for id: " + id);
         }
-        activityRepository.deleteById(id);
-    }
+    
+        List<Student> studentsWithPreferredActivity = studentRepository.findAllByPreferredActivitiesContains(activity);
+        for (Student student : studentsWithPreferredActivity) {
+            student.getPreferredActivities().remove(activity);
+            studentRepository.save(student);
+        }
+    
+        activityRepository.delete(activity);
+    }    
 
     // Generate QR code image
     public BufferedImage generateQRCodeImage(String text) throws Exception {

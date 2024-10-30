@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.shc.shc_server.model.Activity;
 import com.shc.shc_server.model.Student;
 
 @Repository
@@ -30,4 +31,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     // buscar estudiantes con más de cierto número de horas completadas
     List<Student> findByCompletedScholarshipHoursGreaterThan(Double hours);
+
+    List<Student> findAllByPreferredActivitiesContains(Activity activity);
 }
