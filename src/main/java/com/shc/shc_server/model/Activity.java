@@ -51,8 +51,8 @@ public class Activity {
     @Column(nullable = false)
     private Integer maxCapacity;
 
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference 
+    @OneToMany(mappedBy = "preferredActivities", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Student> students;
 
     @Column(nullable = false)

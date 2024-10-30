@@ -58,8 +58,8 @@ public class StudentService {
 
     // Save a new student
     public Student saveStudent(Student student) {
-        student.setPreviousActivities(new ArrayList<>()); // Inicializar si es necesario
-        student.setPreferredActivities(new ArrayList<>()); // Inicializar si es necesario
+        student.setPreviousActivities(new ArrayList<>());
+        student.setPreferredActivities(new ArrayList<>());
         return studentRepository.save(student);
     }
 
@@ -78,8 +78,6 @@ public class StudentService {
             existingStudent.setPreferredActivities(updatedStudent.getPreferredActivities());
             existingStudent.setAboutMe(updatedStudent.getAboutMe());
             existingStudent.setScore(updatedStudent.getScore());
-            existingStudent.setNewActivity(updatedStudent.getNewActivity());
-            existingStudent.setActivity(updatedStudent.getActivity());
 
             return studentRepository.save(existingStudent);
         }

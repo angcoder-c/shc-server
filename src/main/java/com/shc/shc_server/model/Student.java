@@ -2,7 +2,6 @@ package com.shc.shc_server.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -14,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -72,13 +70,4 @@ public class Student {
 
     @Column(nullable = false)
     private Double score;
-
-    @ManyToOne
-    @JoinColumn(name = "new_activity_id")
-    private Activity newActivity;
-
-    @ManyToOne
-    @JoinColumn(name = "activity_id")
-    @JsonBackReference
-    private Activity activity;
 }
