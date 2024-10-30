@@ -155,4 +155,20 @@ public class ActivityService {
         activity.setMaxCapacity(0);
         return activityRepository.save(activity);
     }
+
+    // obtener actividades previas de un estudiante
+    @Transactional(readOnly = true)
+    public List<Activity> getPreviousActivities(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElse(null);
+        Hibernate.initialize(student.getPreviousActivities());
+        return student.getPreviousActivities();
+    }
+
+    // obtener actividades preferidas de un estudiante
+    @Transactional(readOnly = true)
+    public List<Activity> getPreferredActivities(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElse(null);
+        Hibernate.initialize(student.getPreferredActivities());
+        return student.getPreferredActivities();
+    }
 }

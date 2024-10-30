@@ -55,6 +55,7 @@ public class Student {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "activity_id")
     )
+    @JsonIgnore
     private List<Activity> previousActivities;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -63,6 +64,7 @@ public class Student {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "activity_id")
     )
+    @JsonIgnore
     private List<Activity> preferredActivities;
 
     @Column(length = 500)

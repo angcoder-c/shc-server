@@ -83,9 +83,20 @@ public class ActivityController {
 
     @PostMapping("/{activityId}/addStudent/{studentId}")
     public ResponseEntity<Activity> addStudentToActivity(@PathVariable Long activityId, @PathVariable Long studentId) {
-        studentService.joinActivity(studentId, activityId);
         Activity updatedActivity = activityService.addStudent(activityId, studentId);
         return ResponseEntity.ok(updatedActivity);
+    }
+
+    @GetMapping("/by/student/{studentId}")
+    public ResponseEntity<List<Activity>> getActivitiesByStudentID(@PathVariable Long studentId) {
+        List<Activity> activities = activityService.getPreferredActivities(studentId);
+        return ResponseEntity.ok(activities);
+    }
+
+    @GetMapping("/previous/by/student/{studentId}")
+    public ResponseEntity<List<Activity>> getPreviousActivitiesByStudentID(@PathVariable Long studentId) {
+        List<Activity> activities = activityService.getPreviousActivities(studentId);
+        return ResponseEntity.ok(activities);
     }
 
     @DeleteMapping("/{activityId}/removeStudent/{studentId}")
