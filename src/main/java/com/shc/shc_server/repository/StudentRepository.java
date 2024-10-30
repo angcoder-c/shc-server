@@ -1,12 +1,12 @@
 package com.shc.shc_server.repository;
 
-import com.shc.shc_server.model.Student;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.shc.shc_server.model.Student;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -30,7 +30,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     // buscar estudiantes con más de cierto número de horas completadas
     List<Student> findByCompletedScholarshipHoursGreaterThan(Double hours);
-
-    // buscar por actividad actual
-    List<Student> findByActivity_Id(Long activityId);
 }

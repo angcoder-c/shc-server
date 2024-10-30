@@ -146,6 +146,8 @@ public class ActivityService {
         activityRepository.save(activity);
         studentRepository.save(student);
 
+        Hibernate.initialize(activity.getStudents());
+
         return activity;
     }
 
