@@ -99,7 +99,7 @@ public class StudentService {
         if (activity != null && student != null) {
             if (activity.getStudents().size() < activity.getMaxCapacity()) {
                 student.getPreferredActivities().add(activity);
-                activity.getStudents().add(student);
+                activity.getStudents().add(student.getId());
                 
                 studentRepository.save(student);
                 activityRepository.save(activity);

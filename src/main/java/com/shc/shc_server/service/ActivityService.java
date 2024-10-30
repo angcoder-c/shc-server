@@ -104,7 +104,7 @@ public class ActivityService {
 
     // Get students by activity id
     @Transactional(readOnly = true)
-    public List<Student> getStudentsByActivityId(Long activityId) {
+    public List<Long> getStudentsByActivityId(Long activityId) {
         Activity activity = getActivityById(activityId);
         Hibernate.initialize(activity.getStudents());
         return activity.getStudents();
@@ -124,7 +124,7 @@ public class ActivityService {
             throw new RuntimeException("Maximum capacity reached for activity: " + activityId);
         }
 
-        activity.getStudents().add(student);
+        activity.getStudents().add(student.getId());
         student.getPreferredActivities().add(activity); 
 
         activityRepository.save(activity);

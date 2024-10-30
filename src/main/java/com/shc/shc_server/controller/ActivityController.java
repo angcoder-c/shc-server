@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shc.shc_server.model.Activity;
-import com.shc.shc_server.model.Student;
 import com.shc.shc_server.service.ActivityService;
 import com.shc.shc_server.service.StudentService;
 
@@ -69,8 +68,8 @@ public class ActivityController {
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<List<Student>> getStudentsByActivityId(@PathVariable Long id) {
-        List<Student> students = activityService.getStudentsByActivityId(id);
+    public ResponseEntity<List<Long>> getStudentsByActivityId(@PathVariable Long id) {
+        List<Long> students = activityService.getStudentsByActivityId(id);
         return ResponseEntity.ok(students);
     }
 
