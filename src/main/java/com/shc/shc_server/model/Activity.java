@@ -47,6 +47,9 @@ public class Activity {
     @Column(nullable = false)
     private Integer maxCapacity;
 
+    @Column(nullable = false)
+    private Boolean complete;
+
     private List<Long> students;
 
     @Column(nullable = false)

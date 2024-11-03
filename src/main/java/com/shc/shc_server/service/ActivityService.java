@@ -80,6 +80,7 @@ public class ActivityService {
         existingActivity.setDepartment(updatedActivity.getDepartment());
         existingActivity.setDescription(updatedActivity.getDescription());
         existingActivity.setDate(updatedActivity.getDate());
+        existingActivity.setComplete(updatedActivity.getComplete());
     
         Activity savedActivity = activityRepository.save(existingActivity);
     

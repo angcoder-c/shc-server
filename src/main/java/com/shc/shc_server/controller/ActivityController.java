@@ -42,6 +42,14 @@ public class ActivityController {
         return ResponseEntity.ok(activity);
     }
 
+    @GetMapping("/{id}/complete/")
+    public ResponseEntity<Activity> completeActivity(@PathVariable Long id) {
+        Activity activity = activityService.getActivityById(id);
+        activity.setComplete(true);
+        Activity completeActivity = activityService.updateActivity(id, activity);
+        return ResponseEntity.ok(completeActivity);
+    }
+
 
     @GetMapping("/coordinator-name/{name}")
     public ResponseEntity<List<Activity>> getActivityByCoordinatorEmail(@PathVariable String name) {
