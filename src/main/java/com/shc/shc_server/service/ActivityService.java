@@ -144,6 +144,10 @@ public class ActivityService {
             throw new RuntimeException("Student not found for id: " + studentId);
         }
 
+        if (activity.getStudents() == null) {
+            activity.setStudents(new ArrayList<>());
+        }
+
         if (activity.getStudents().size() >= activity.getMaxCapacity()) {
             throw new RuntimeException("Maximum capacity reached for activity: " + activityId);
         }
