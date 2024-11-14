@@ -44,10 +44,8 @@ public class ActivityController {
 
     @GetMapping("/{id}/complete/")
     public ResponseEntity<Activity> completeActivity(@PathVariable Long id) {
-        Activity activity = activityService.getActivityById(id);
-        activity.setComplete(true);
-        Activity completeActivity = activityService.updateActivity(id, activity);
-        return ResponseEntity.ok(completeActivity);
+        Activity activity = activityService.completeActivity(id);
+        return ResponseEntity.ok(activity);
     }
 
 

@@ -25,6 +25,8 @@ import com.shc.shc_server.model.Student;
 import com.shc.shc_server.repository.ActivityRepository;
 import com.shc.shc_server.repository.StudentRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ActivityService {
 
@@ -34,6 +36,29 @@ public class ActivityService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    public Activity completeActivity(Long id) {
+    Activity activity = activityRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Activity not found with id: " + id));
+
+        if (activity.getComplete()) {
+            throw new IllegalStateException("The activity is already marked as complete");
+        }
+
+        Double hoursToAdd = activity.getScholarshipHoursOffered() * activity.getMultiplier();
+
+        for (Long student_id : activity.getStudents()) {
+            Student student = studentRepository.getById(student_id);
+            student.setCompletedScholarshipHours(student.getCompletedScholarshipHours() + hoursToAdd);
+            studentRepository.save(student);
+        }
+
+        activity.setComplete(true);
+        activityRepository.save(activity);
+
+        return activity;
+    }
+
 
     // Get all activities
     public List<Activity> getAllActivities() {
