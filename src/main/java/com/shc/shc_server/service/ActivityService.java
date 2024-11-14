@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -167,6 +168,10 @@ public class ActivityService {
 
         if (student == null) {
             throw new RuntimeException("Student not found for id: " + studentId);
+        }
+
+        if (activity.getStudents() == null) {
+            activity.setStudents(new ArrayList<>());
         }
 
         if (activity.getStudents().size() >= activity.getMaxCapacity()) {
