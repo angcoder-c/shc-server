@@ -69,12 +69,12 @@ public class AuthController {
         student.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         student.setMajor(registerDto.getMajor());
         student.setYear(registerDto.getYear());
+        student.setAboutMe(registerDto.getAboutme());
+        student.setScholarshipHours(registerDto.getScholarshipHours());
 
-        student.setScholarshipHours(50.0);
-        student.setCompletedScholarshipHours(30.0);
+        student.setCompletedScholarshipHours(0.0);
         student.setPreviousActivities(null);
         student.setPreferredActivities(null);
-        student.setAboutMe("Hello ! wellcome to my profile");
         student.setScore(5.0);
         studentService.saveStudent(student);
         return ResponseEntity.ok("Student registered successfully");

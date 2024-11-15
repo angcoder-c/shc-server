@@ -9,4 +9,6 @@ public class RegisterDto {
     private String password;
     private String major;
     private Integer year;
+    private Double scholarshipHours;
+    private String aboutme;
 }
